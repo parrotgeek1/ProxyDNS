@@ -30,35 +30,29 @@ unsigned int transfer(int from, int to)
     return disconnected;
 }
 
-void handle(int client, char *host, char *port)
+void handle(int client, char *host, int port)
 {
-    struct addrinfo hints, *res;
     int server = -1;
     unsigned int disconnected = 0;
     fd_set set;
     unsigned int max_sock;
     
-    /* Get the address info */
-    memset(&hints, 0, sizeof hints);
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
-    if (getaddrinfo(host, port, &hints, &res) != 0) {
-        perror("getaddrinfo");
-        close(client);
-        return;
-    }
     
     /* Create the socket */
-    server = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+    server = socket(PF_INET,SOCK_STREAM,IPPROTO_IP);
     if (server == -1) {
-        perror("socket");
+        perror("tcp: socket");
         close(client);
         return;
     }
+    struct sockaddr_in serv_addr;
+    serv_addr.sin_addr.s_addr = inet_addr(host);
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(port);
     
     /* Connect to the host */
-    if (connect(server, res->ai_addr, res->ai_addrlen) == -1) {
-        perror("connect");
+    if (connect(server, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == -1) {
+        perror("tcp: connect");
         close(client);
         return;
     }
@@ -76,7 +70,7 @@ void handle(int client, char *host, char *port)
         FD_SET(client, &set);
         FD_SET(server, &set);
         if (select(max_sock + 1, &set, NULL, NULL, NULL) == -1) {
-            perror("select");
+            perror("tcp: select");
             break;
         }
         if (FD_ISSET(client, &set)) {
@@ -90,7 +84,7 @@ void handle(int client, char *host, char *port)
     close(client);
 }
 
-void udpthread(char *ip, char* port) {
+void udpthread(char *ip, int port) {
     int os=socket(PF_INET,SOCK_DGRAM,IPPROTO_IP);
     
     struct sockaddr_in a;
@@ -100,10 +94,11 @@ void udpthread(char *ip, char* port) {
         printf("udp Can't bind our address\n");
         exit(1); }
     
-    a.sin_addr.s_addr=inet_addr(ip); a.sin_port=htons(atoi(port));
+    a.sin_addr.s_addr=inet_addr(ip); a.sin_port=htons(port);
     
     struct sockaddr_in sa;
     struct sockaddr_in da; da.sin_addr.s_addr=0;
+    puts("started UDP");
     while(1) {
         char buf[256];
         socklen_t sn=sizeof(sa);
@@ -122,8 +117,10 @@ void udpthread(char *ip, char* port) {
 
 int main(int argc, char **argv)
 {
+#ifdef EMBEDDED
+    nice(-20);
+#endif
     int sock;
-    struct addrinfo hints, *res;
     int reuseaddr = 1; /* True */
     char * host, * port;
     
@@ -135,45 +132,38 @@ int main(int argc, char **argv)
     host = argv[1];
     port = argv[2];
     
-    /* Get the address info */
-    memset(&hints, 0, sizeof hints);
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
-    if (getaddrinfo(NULL, PORT, &hints, &res) != 0) {
-        perror("getaddrinfo");
-        return 1;
-    }
-    
     /* Create the socket */
-    sock = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+    sock = socket(PF_INET,SOCK_STREAM,IPPROTO_IP);
     if (sock == -1) {
-        perror("socket");
-        freeaddrinfo(res);
+        perror("tcp: socket");
+        
         return 1;
     }
     
     /* Enable the socket to reuse the address */
     if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(int)) == -1) {
-        perror("setsockopt");
-        freeaddrinfo(res);
+        perror("tcp: setsockopt");
+        
         return 1;
     }
-    
+    struct sockaddr_in atcp;
+    atcp.sin_family=AF_INET;
+    atcp.sin_addr.s_addr=inet_addr("0.0.0.0"); atcp.sin_port=htons(53);
     /* Bind to the address */
-    if (bind(sock, res->ai_addr, res->ai_addrlen) == -1) {
-        perror("bind");
-        freeaddrinfo(res);
+    if (bind(sock, (struct sockaddr *)&atcp,sizeof(atcp)) == -1) {
+        perror("tcp: bind");
+        
         return 1;
     }
     
     /* Listen */
     if (listen(sock, BACKLOG) == -1) {
-        perror("listen");
-        freeaddrinfo(res);
+        perror("tcp: listen");
+        
         return 1;
     }
     
-    freeaddrinfo(res);
+    
     
     /* Ignore broken pipe signal */
     signal(SIGPIPE, SIG_IGN);
@@ -182,22 +172,23 @@ int main(int argc, char **argv)
     if (pid == 0)
     {
         // child process
-        udpthread(host,port);
+        udpthread(host,atoi(port));
     }
     else if (pid > 0)
     {
         // parent process
         /* Main loop */
+        puts("started TCP");
         while (1) {
             socklen_t size = sizeof(struct sockaddr_in);
             struct sockaddr_in their_addr;
             int newsock = accept(sock, (struct sockaddr*)&their_addr, &size);
             
             if (newsock == -1) {
-                perror("accept");
+                perror("tcp: accept");
             }
             else {
-                handle(newsock, host, port);
+                handle(newsock, host, atoi(port));
             }
         }
         
@@ -206,7 +197,7 @@ int main(int argc, char **argv)
     else
     {
         // fork failed
-        printf("fork() failed!\n");
+        perror("fork");
         close(sock);
         return 1;
     }

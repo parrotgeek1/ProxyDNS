@@ -1,2 +1,3 @@
 #!/bin/sh
-gcc proxydns2.c -O3 -Wall -Wextra -Werror -o proxydns2
+${CCPREFIX}gcc proxydns2.c -O3 -Wall -Wextra -Werror $EXTRAFLAGS -o proxydns2
+${CCPREFIX}strip proxydns2

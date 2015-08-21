@@ -38,3 +38,7 @@ to do
 optimize/more multithread?
 can auto choose random server from list
 iptables? http://unix.stackexchange.com/questions/144482/iptables-to-redirect-dns-lookup-ip-and-port
+add tcp reset prevent
+support ipv6 server&client
+adjust for static server config, print ip if pi
+klibc? later
