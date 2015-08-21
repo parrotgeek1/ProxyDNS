@@ -1,3 +1,7 @@
+#define CFG_HOST "185.37.37.37"
+#define CFG_PORT "54"
+#define CFG_IP "ip=dhcp"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> /* memset() */
@@ -11,6 +15,22 @@
 #define PORT     "53" /* Port to listen on */
 #define BACKLOG  10      /* Passed to listen() */
 #define BUF_SIZE 4096    /* Buffer for  transfers */
+
+#ifdef EMBEDDED
+#include <sys/utsname.h>
+#include <sys/mount.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+
+void unameinfo(void) {
+    struct utsname buffer;
+    if (uname(&buffer) != 0) {
+        perror("uname");
+        return;
+    }
+    printf("Running on %s %s %s %s\n", buffer.sysname,buffer.release,buffer.version,buffer.machine);
+}
+#endif
 
 unsigned int transfer(int from, int to)
 {
@@ -41,7 +61,7 @@ void handle(int client, char *host, int port)
     /* Create the socket */
     server = socket(PF_INET,SOCK_STREAM,IPPROTO_IP);
     if (server == -1) {
-        perror("tcp: socket");
+        perror("TCP error: socket");
         close(client);
         return;
     }
@@ -52,7 +72,7 @@ void handle(int client, char *host, int port)
     
     /* Connect to the host */
     if (connect(server, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == -1) {
-        perror("tcp: connect");
+        perror("TCP error: connect");
         close(client);
         return;
     }
@@ -70,7 +90,7 @@ void handle(int client, char *host, int port)
         FD_SET(client, &set);
         FD_SET(server, &set);
         if (select(max_sock + 1, &set, NULL, NULL, NULL) == -1) {
-            perror("tcp: select");
+            perror("TCP error: select");
             break;
         }
         if (FD_ISSET(client, &set)) {
@@ -91,14 +111,15 @@ void udpthread(char *ip, int port) {
     a.sin_family=AF_INET;
     a.sin_addr.s_addr=inet_addr("0.0.0.0"); a.sin_port=htons(53);
     if(bind(os,(struct sockaddr *)&a,sizeof(a)) == -1) {
-        printf("udp Can't bind our address\n");
-        exit(1); }
+        perror("UDP error: bind");
+        exit(1);
+    }
     
     a.sin_addr.s_addr=inet_addr(ip); a.sin_port=htons(port);
     
     struct sockaddr_in sa;
     struct sockaddr_in da; da.sin_addr.s_addr=0;
-    puts("started UDP");
+    puts("Started UDP thread");
     while(1) {
         char buf[256];
         socklen_t sn=sizeof(sa);
@@ -117,13 +138,40 @@ void udpthread(char *ip, int port) {
 
 int main(int argc, char **argv)
 {
-#ifdef EMBEDDED
-    nice(-20);
-#endif
+    printf("\e[1;1H\e[2J"); // clear spurious vchiq errors
     int sock;
     int reuseaddr = 1; /* True */
     char * host, * port;
+    host = CFG_HOST;
+    port = CFG_PORT;
+#ifdef EMBEDDED
+    nice(-20);
+    puts("ProxyDNS OS v1.0, built on " __DATE__ " at " __TIME__);
+    unameinfo();
+    mount("none","/proc","proc", 0,NULL);
+    mount("none","/sys","sysfs", 0,NULL);
+    puts("Waiting 2 seconds for network device");
+    sleep(2);
+    pid_t pidip = fork();
     
+    if (pidip == -1)
+    {
+        // fork failed
+        perror("fork");
+        return 1;
+    }
+    else if (pidip > 0)
+    {
+        int status;
+        waitpid(pidip, &status, 0);
+    }
+    else
+    {
+        // we are the child
+        execl("/ipconfig","ipconfig",CFG_IP,NULL);
+        _exit(EXIT_FAILURE);   // exec never returns
+    }
+#else
     /* Get the server host and port from the command line */
     if (argc < 3) {
         fprintf(stderr, "Usage: proxydns2 host port\n");
@@ -131,18 +179,19 @@ int main(int argc, char **argv)
     }
     host = argv[1];
     port = argv[2];
-    
+    printf("Using proxy DNS server at %s port %s\n",host,port);
+#endif
     /* Create the socket */
     sock = socket(PF_INET,SOCK_STREAM,IPPROTO_IP);
     if (sock == -1) {
-        perror("tcp: socket");
+        perror("TCP error: socket");
         
         return 1;
     }
     
     /* Enable the socket to reuse the address */
     if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(int)) == -1) {
-        perror("tcp: setsockopt");
+        perror("TCP error: setsockopt");
         
         return 1;
     }
@@ -151,19 +200,17 @@ int main(int argc, char **argv)
     atcp.sin_addr.s_addr=inet_addr("0.0.0.0"); atcp.sin_port=htons(53);
     /* Bind to the address */
     if (bind(sock, (struct sockaddr *)&atcp,sizeof(atcp)) == -1) {
-        perror("tcp: bind");
+        perror("TCP error: bind");
         
         return 1;
     }
     
     /* Listen */
     if (listen(sock, BACKLOG) == -1) {
-        perror("tcp: listen");
+        perror("TCP error: listen");
         
         return 1;
     }
-    
-    
     
     /* Ignore broken pipe signal */
     signal(SIGPIPE, SIG_IGN);
@@ -178,14 +225,14 @@ int main(int argc, char **argv)
     {
         // parent process
         /* Main loop */
-        puts("started TCP");
+        puts("Started TCP thread");
         while (1) {
             socklen_t size = sizeof(struct sockaddr_in);
             struct sockaddr_in their_addr;
             int newsock = accept(sock, (struct sockaddr*)&their_addr, &size);
             
             if (newsock == -1) {
-                perror("tcp: accept");
+                perror("TCP error: accept");
             }
             else {
                 handle(newsock, host, atoi(port));
@@ -201,6 +248,5 @@ int main(int argc, char **argv)
         close(sock);
         return 1;
     }
-    
     return 0;
 }

@@ -1,6 +1,9 @@
 jproxydns, but in c, and way better
 ===================================
 
+You *must* run rpi_image.sh with sudo!
+--------------------------------------
+
 to find dns that's on other ports
 
 https://www.google.com/search?client=safari&rls=en&ie=UTF-8&oe=UTF-8&q=%22iptables+-t+nat+-A+PREROUTING+-i+br0+-p+udp+--dport+53+-j+DNAT%22+-nvram&tbs=li 1&filter=0
@@ -36,9 +39,7 @@ to do
 -----
 
 optimize/more multithread?
-can auto choose random server from list
 iptables? http://unix.stackexchange.com/questions/144482/iptables-to-redirect-dns-lookup-ip-and-port
-add tcp reset prevent
 support ipv6 server&client
-adjust for static server config, print ip if pi
-klibc? later
+add error checking for atoi etc
+re-add working config file loader
