@@ -55,8 +55,8 @@ EOF
 echo 'logo.nologo maxcpus=2 elevator=noop nomodule panic=30 oops=panic consoleblank=0 smsc95xx.turbo_mode=N root=/dev/ram0 rootwait init=/init devtmpfs.mount=1 quiet hibernate=no ro' > cmdline.txt
 
 cd ..
+rm -f release.zip
+zip -9 -r release.zip sdcard
 chmod -R 0755 .
 chown -R $(logname):$(sudo -u $(logname) groups | cut -d ' ' -f 1) .
-
-cd ..
 echo Done
