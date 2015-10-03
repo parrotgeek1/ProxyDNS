@@ -1,5 +1,6 @@
-jproxydns, but in c, and way better
-===================================
+proxydns2
+=========
+a tool to bypass DNS-based internet censorship when port 53, or even DNS packets themselves, are blocked by a firewall
 
 You *must* run rpi_image.sh with sudo!
 --------------------------------------
