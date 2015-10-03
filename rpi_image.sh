@@ -1,5 +1,8 @@
 #!/bin/sh
 
+#change this to match your own computer
+CCPREFIX="$HOME/arm-none-linux-gnueabi/bin/arm-none-linux-gnueabi-"
+
 rm -rf initrd sdcard
 mkdir -p initrd sdcard
 cd initrd
@@ -28,10 +31,10 @@ mv lib/* ../initrd/lib/
 cd ..
 rm -rf kl2
 
-CCPREFIX="$HOME/arm-none-linux-gnueabi/bin/arm-none-linux-gnueabi-" EXTRAFLAGS="-Wno-unused-parameter -DEMBEDDED -static" ./make.sh
+CCPREFIX="$CCPREFIX" EXTRAFLAGS="-Wno-unused-parameter -DEMBEDDED -static" ./make.sh
 
 cd initrd
-mv ../proxydns2 init
+mv ../proxydns init
 chown -R 0:0 .
 chmod -R 0755 .
 find . | cpio -H newc -o > ../sdcard/initrd
@@ -52,11 +55,12 @@ disable_splash=1
 initramfs initrd.gz followkernel
 EOF
 
-echo 'logo.nologo maxcpus=2 elevator=noop nomodule panic=30 oops=panic consoleblank=0 smsc95xx.turbo_mode=N root=/dev/ram0 rootwait init=/init devtmpfs.mount=1 quiet hibernate=no ro' > cmdline.txt
+echo 'logo.nologo elevator=noop nomodule panic=30 oops=panic consoleblank=0 smsc95xx.turbo_mode=N root=/dev/ram0 rootwait init=/init devtmpfs.mount=1 quiet hibernate=no ro' > cmdline.txt
 
 cd ..
-rm -f release.zip
-zip -9 -r release.zip sdcard
+rm -f rpi-release.zip
+find sdcard -type f -name '.DS_Store' -delete
+zip -9 -r rpi-release.zip sdcard
 chmod -R 0755 .
 chown -R $(logname):$(sudo -u $(logname) groups | cut -d ' ' -f 1) .
 echo Done

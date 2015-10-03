@@ -1,4 +1,4 @@
-proxydns2
+ProxyDNS
 =========
 a tool to bypass DNS-based internet censorship when port 53, or even DNS packets themselves, are blocked by a firewall
 

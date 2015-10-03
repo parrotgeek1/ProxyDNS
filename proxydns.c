@@ -138,15 +138,19 @@ void udpthread(char *ip, int port) {
 
 int main(int argc, char **argv)
 {
-    printf("\e[1;1H\e[2J"); // clear spurious vchiq errors
     int sock;
     int reuseaddr = 1; /* True */
     char * host, * port;
     host = CFG_HOST;
     port = CFG_PORT;
+    puts("ProxyDNS "
 #ifdef EMBEDDED
+    "OS "
+#endif
+"v1.0.1, built on " __DATE__ " at " __TIME__);
+#ifdef EMBEDDED
+    printf("\e[1;1H\e[2J"); // clear spurious vchiq errors
     nice(-20);
-    puts("ProxyDNS OS v1.0, built on " __DATE__ " at " __TIME__);
     unameinfo();
     mount("none","/proc","proc", 0,NULL);
     mount("none","/sys","sysfs", 0,NULL);
@@ -154,41 +158,40 @@ int main(int argc, char **argv)
     sleep(2);
     pid_t pidip = fork();
     
-    if (pidip == -1)
-    {
+    if (pidip == -1) {
         // fork failed
         perror("fork");
         return 1;
-    }
-    else if (pidip > 0)
-    {
+    } else if (pidip > 0) {
         int status;
         waitpid(pidip, &status, 0);
-    }
-    else
-    {
+    } else {
         // we are the child
         execl("/ipconfig","ipconfig",CFG_IP,NULL);
         _exit(EXIT_FAILURE);   // exec never returns
     }
 #else
     /* Get the server host and port from the command line */
-    if (argc < 3) {
-        fprintf(stderr, "Usage: proxydns2 host port\n");
+    if (argc < 3 || argc > 4) {
+        fprintf(stderr, "Usage: proxydns2 host port [-d]\n");
         return 1;
     }
     host = argv[1];
     port = argv[2];
+#endif
     printf("Using proxy DNS server at %s port %s\n",host,port);
+#ifndef EMBEDDED
+    if(argc == 4 && strcmp(argv[3],"-d") == 0) {
+        puts("Becoming a daemon");
+        daemon(0,0);
+    }
 #endif
     /* Create the socket */
     sock = socket(PF_INET,SOCK_STREAM,IPPROTO_IP);
     if (sock == -1) {
         perror("TCP error: socket");
-        
         return 1;
     }
-    
     /* Enable the socket to reuse the address */
     if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(int)) == -1) {
         perror("TCP error: setsockopt");
@@ -201,48 +204,34 @@ int main(int argc, char **argv)
     /* Bind to the address */
     if (bind(sock, (struct sockaddr *)&atcp,sizeof(atcp)) == -1) {
         perror("TCP error: bind");
-        
         return 1;
     }
-    
     /* Listen */
     if (listen(sock, BACKLOG) == -1) {
         perror("TCP error: listen");
-        
         return 1;
     }
-    
     /* Ignore broken pipe signal */
     signal(SIGPIPE, SIG_IGN);
     pid_t pid = fork();
-    
-    if (pid == 0)
-    {
+    if (pid == 0) {
         // child process
         udpthread(host,atoi(port));
-    }
-    else if (pid > 0)
-    {
-        // parent process
+    } else if (pid > 0) {
         /* Main loop */
         puts("Started TCP thread");
         while (1) {
             socklen_t size = sizeof(struct sockaddr_in);
             struct sockaddr_in their_addr;
             int newsock = accept(sock, (struct sockaddr*)&their_addr, &size);
-            
             if (newsock == -1) {
                 perror("TCP error: accept");
-            }
-            else {
+            } else {
                 handle(newsock, host, atoi(port));
             }
         }
-        
         close(sock);
-    }
-    else
-    {
+    } else {
         // fork failed
         perror("fork");
         close(sock);
