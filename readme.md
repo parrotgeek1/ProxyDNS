@@ -65,13 +65,3 @@ iptables http://unix.stackexchange.com/questions/144482/iptables-to-redirect-dns
 support ipv6 server&client
 
 re-add working config file loader
-
-klibc static
-
-web interface for config dhcp or not, etc
-
-use a random server from a list
-
-support a5-v11, wt1520/3020? etc
-
-use smaller kernel
