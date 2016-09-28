@@ -5,14 +5,8 @@ A tool to bypass DNS-based internet censorship when port 53, or even DNS packets
 You *must* run rpi_image.sh with sudo!
 --------------------------------------
 
-Bugs
-====
-
-* no udp connection tracking (for > 1 packet queries), tcp is ok
-
-* no multithreading (slower)
-
-* no error checking for atoi etc
+Bug
+===
 
 * It never renews the DHCP lease (on embedded version)
 
@@ -57,11 +51,9 @@ http://support.smartdnsproxy.com/customer/portal/articles/1666197-bypass-transpa
 23.21.43.50 1512
 54.229.171.243 1512
 
-To Do
-=====
+To Do (never)
+=============
 
 iptables http://unix.stackexchange.com/questions/144482/iptables-to-redirect-dns-lookup-ip-and-port
 
 support ipv6 server&client
-
-re-add working config file loader
