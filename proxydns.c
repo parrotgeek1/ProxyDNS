@@ -173,7 +173,7 @@ int main(int argc, char **argv)
 #else
     /* Get the server host and port from the command line */
     if (argc < 3 || argc > 4) {
-        fprintf(stderr, "Usage: proxydns2 host port [-d]\n");
+        fprintf(stderr, "Usage: %s host port [-d]\n",argv[0]);
         return 1;
     }
     host = argv[1];
