@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #change this to match your own computer
-CCPREFIX="$HOME/arm-none-linux-gnueabi/bin/arm-none-linux-gnueabi-"
+CCPREFIX="/usr/local/carlson-minot/crosscompilers/arm-none-linux-gnueabi/bin/"
 
 rm -rf initrd sdcard
 mkdir -p initrd sdcard
