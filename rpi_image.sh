@@ -1,7 +1,8 @@
-#!/bin/sh
+#!/bin/bash -e
 
 #change this to match your own computer
-CCPREFIX="/usr/local/carlson-minot/crosscompilers/arm-none-linux-gnueabi/bin/"
+CCPREFIX="/usr/local/carlson-minot/crosscompilers/arm-none-linux-gnueabi/bin"
+export PATH="$CCPREFIX:$PATH"
 
 rm -rf initrd sdcard
 mkdir -p initrd sdcard
@@ -31,7 +32,7 @@ mv lib/* ../initrd/lib/
 cd ..
 rm -rf kl2
 
-CCPREFIX="$CCPREFIX" EXTRAFLAGS="-Wno-unused-parameter -DEMBEDDED -static" ./make.sh
+CCPREFIX="$CCPREFIX/" EXTRAFLAGS="-Wno-unused-parameter -DEMBEDDED -static" ./make.sh
 
 cd initrd
 mv ../proxydns init

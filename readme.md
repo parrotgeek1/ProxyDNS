@@ -1,8 +1,8 @@
-ProxyDNS v1.0.1
+ProxyDNS v1.0.2
 ===============
 A tool to bypass DNS-based internet censorship when port 53, or even DNS packets themselves, are blocked by a firewall.
 
-You *must* run rpi_image.sh with sudo!
+You *must* run rpi_image.sh with sudo, and change CCPREFIX to match your ARM compiler path!
 --------------------------------------
 
 Bug
@@ -21,6 +21,11 @@ To find DNS servers not on port 53
 
 Servers in order of best to worst:
 ----------------------------------
+
+Google
+------
+
+8.8.8.8 5353 / 8.8.4.4 5353
 
 Unlocator
 ---------

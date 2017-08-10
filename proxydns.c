@@ -1,5 +1,5 @@
-#define CFG_HOST "185.37.37.37"
-#define CFG_PORT "54"
+#define CFG_HOST "8.8.8.8"
+#define CFG_PORT "5353"
 #define CFG_IP "ip=dhcp"
 
 #include <stdio.h>
