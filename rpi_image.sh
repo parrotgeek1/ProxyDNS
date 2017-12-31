@@ -1,8 +1,7 @@
 #!/bin/bash -e
 
 #change this to match your own computer
-CCPREFIX="/usr/local/carlson-minot/crosscompilers/arm-none-linux-gnueabi/bin"
-export PATH="$CCPREFIX:$PATH"
+CCPREFIX="$HOME/arm-none-linux-gnueabi/bin/arm-none-linux-gnueabi-"
 
 rm -rf initrd sdcard
 mkdir -p initrd sdcard
@@ -32,7 +31,7 @@ mv lib/* ../initrd/lib/
 cd ..
 rm -rf kl2
 
-CCPREFIX="$CCPREFIX/" EXTRAFLAGS="-Wno-unused-parameter -DEMBEDDED -static" ./make.sh
+CCPREFIX="$CCPREFIX" EXTRAFLAGS="-Wno-unused-parameter -DEMBEDDED -static" ./make.sh
 
 cd initrd
 mv ../proxydns init
@@ -62,6 +61,6 @@ cd ..
 rm -f rpi-release.zip
 find sdcard -type f -name '.DS_Store' -delete
 zip -9 -r rpi-release.zip sdcard
-chmod -R 0755 .
-chown -R $(logname):$(sudo -u $(logname) groups | cut -d ' ' -f 1) .
+chmod -R 0755 sdcard rpi-release.zip
+chown -R $(logname):$(sudo -u $(logname) groups | cut -d ' ' -f 1) sdcard rpi-release.zip
 echo Done
