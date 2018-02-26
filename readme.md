@@ -13,6 +13,7 @@ Bug
 ===
 
 * It never renews the DHCP lease (on embedded version)
+* It doesn't support IPv6
 
 To find DNS servers not on port 53
 ==================================
@@ -59,10 +60,3 @@ http://support.smartdnsproxy.com/customer/portal/articles/1666197-bypass-transpa
 
 23.21.43.50 1512
 54.229.171.243 1512
-
-To Do (never)
-=============
-
-iptables http://unix.stackexchange.com/questions/144482/iptables-to-redirect-dns-lookup-ip-and-port
-
-support ipv6 server&client
