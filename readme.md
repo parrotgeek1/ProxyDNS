@@ -3,7 +3,7 @@ ProxyDNS v1.0.2
 A tool to bypass DNS-based internet censorship when port 53, or even DNS packets themselves, are blocked by a firewall.
 
 # [Download for Raspberry Pi](https://github.com/parrotgeek1/ProxyDNS/raw/master/rpi-release.zip)
-* Extract the contents of this zip to a FAT32 formatted SD card and insert it into your Raspberry Pi (B/B+/2/3). 
+* Extract the contents of this zip to a FAT32 formatted SD card and insert it into your Raspberry Pi (B/B+/2/3/3B+). 
 * Only supports Ethernet, not WiFi!
 # [Source Code](https://github.com/parrotgeek1/ProxyDNS)
 
