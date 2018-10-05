@@ -1,5 +1,5 @@
 #define CFG_HOST "8.8.8.8"
-#define CFG_PORT "5353"
+#define CFG_PORT 5353
 #define CFG_IP "ip=dhcp"
 
 #include <stdio.h>
@@ -140,14 +140,15 @@ int main(int argc, char **argv)
 {
     int sock;
     int reuseaddr = 1; /* True */
-    char * host, * port;
+    char * host;
+    int port;
     host = CFG_HOST;
     port = CFG_PORT;
     puts("ProxyDNS "
 #ifdef EMBEDDED
     "OS "
 #endif
-"v1.0.1, built on " __DATE__ " at " __TIME__);
+"v1.0.2, built on " __DATE__ " at " __TIME__);
 #ifdef EMBEDDED
     printf("\e[1;1H\e[2J"); // clear spurious vchiq errors
     nice(-20);
@@ -172,14 +173,14 @@ int main(int argc, char **argv)
     }
 #else
     /* Get the server host and port from the command line */
-    if (argc < 3 || argc > 4) {
+    if (argc < 3 || argc > 4 || atoi(argv[2]) <= 0) {
         fprintf(stderr, "Usage: %s host port [-d]\n",argv[0]);
         return 1;
     }
     host = argv[1];
-    port = argv[2];
+    port = atoi(argv[2]);
 #endif
-    printf("Using proxy DNS server at %s port %s\n",host,port);
+    printf("Using proxy DNS server at %s port %d\n",host,port);
 #ifndef EMBEDDED
     if(argc == 4 && strcmp(argv[3],"-d") == 0) {
         puts("Becoming a daemon");
@@ -216,7 +217,7 @@ int main(int argc, char **argv)
     pid_t pid = fork();
     if (pid == 0) {
         // child process
-        udpthread(host,atoi(port));
+        udpthread(host,port);
     } else if (pid > 0) {
         /* Main loop */
         puts("Started TCP thread");
@@ -227,7 +228,7 @@ int main(int argc, char **argv)
             if (newsock == -1) {
                 perror("TCP error: accept");
             } else {
-                handle(newsock, host, atoi(port));
+                handle(newsock, host, port);
             }
         }
         close(sock);
