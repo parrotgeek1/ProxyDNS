@@ -12,7 +12,6 @@
 #include <netdb.h>
 #include <signal.h>
 
-#define PORT     "53" /* Port to listen on */
 #define BACKLOG  10      /* Passed to listen() */
 #define BUF_SIZE 4096    /* Buffer for  transfers */
 
