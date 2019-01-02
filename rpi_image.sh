@@ -37,17 +37,18 @@ cd initrd
 mv ../proxydns init
 chown -R 0:0 .
 chmod -R 0755 .
-find . | cpio -H newc -o > ../sdcard/initrd
+find . | cpio -H newc -o > ../sdcard/initrd >/dev/null 2>&1
 gzip ../sdcard/initrd
 cd ..
 rm -rf initrd
 
+echo Downloading firmware, this will take a while
 curl -L -o fw.zip https://github.com/Hexxeh/rpi-firmware/archive/master.zip
 unzip -q -o fw.zip
 mv rpi-firmware-master/* sdcard/
 rm -rf fw.zip rpi-firmware-master
 cd sdcard
-rm -rf modules overlays vc *.symvers start{,_db,_x}.elf git_hash *.md fixup{,_db,_x}.dat
+rm -rf modules overlays vc *.symvers start{,_db,_x}.elf git_hash *.md fixup{,_db,_x}.dat uname_string* bcm2708-rpi-0-w.dtb bcm*-rpi-cm*.dtb
 cat << EOF > config.txt
 gpu_mem=16
 boot_delay=0
@@ -60,7 +61,7 @@ echo 'logo.nologo elevator=noop nomodule panic=30 oops=panic consoleblank=0 smsc
 cd ..
 rm -f rpi-release.zip
 find sdcard -type f -name '.DS_Store' -delete
-zip -9 -r rpi-release.zip sdcard
+zip -9 -q -r rpi-release.zip sdcard
 chmod -R 0755 sdcard rpi-release.zip
 chown -R $(logname):$(sudo -u $(logname) groups | cut -d ' ' -f 1) sdcard rpi-release.zip
 echo Done
