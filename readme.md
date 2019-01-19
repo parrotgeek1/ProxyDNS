@@ -1,39 +1,53 @@
-ProxyDNS v1.0.2
-===============
-Tool written in C which bypasses DNS-based internet censorship even when port 53 is intercepted. Runs on all POSIX compliant OSes. Includes its own tiny single-purpose Linux distribution for secure and efficient use on the Raspberry Pi.
+#ProxyDNS v1.0.2
 
-# [Download for Raspberry Pi](https://github.com/parrotgeek1/ProxyDNS/raw/master/rpi-release.zip)
-* Extract the contents of this zip to a FAT32 formatted SD card and insert it into your Raspberry Pi (B/B+/2/3/3B+). 
-* Only supports Ethernet, not WiFi!
+Tool written in C which bypasses DNS-based internet censorship even when port 53 is intercepted. Runs on all POSIX compliant OSes. 
 # [Source Code](https://github.com/parrotgeek1/ProxyDNS)
 
-You *must* run rpi_image.sh with sudo!
-
-Bug
-===
+#Bug
 
 * It never renews the DHCP lease (on embedded version)
 * It doesn't support IPv6
 
-Servers
--------
+#Servers:
 
-Google
-------
+##OpenDNS
 
-8.8.8.8 5353 / 8.8.4.4 5353
+HOST: 208.67.222.222,208.67.220.220
 
-Unlocator
----------
+PORT: 443,5353
 
-https://support.unlocator.com/customer/portal/articles/1440517-how-to-bypass-dns-hijacking
+##Unlocator
 
-185.37.37.37 54 / 185.37.39.39 54
+[how-to-bypass-dns-hijacking](https://support.unlocator.com/customer/portal/articles/1440517-how-to-bypass-dns-hijacking)
 
-Smart DNS Proxy
----------------
+HOST: 185.37.37.37,185.37.39.39
 
-http://support.smartdnsproxy.com/customer/portal/articles/1666197-bypass-transparent-dns-proxy-with-a-dd-wrt-router
+PORT: 54
 
-23.21.43.50 1512
-54.229.171.243 1512
+##Smart DNS Proxy
+
+[bypass-transparent-dns-proxy-with-a-dd-wrt-router](http://support.smartdnsproxy.com/customer/portal/articles/1666197-bypass-transparent-dns-proxy-with-a-dd-wrt-router)
+
+HOST: 23.21.43.50,54.229.171.243
+
+PORT: 1512
+
+##OpenNIC(anycast)
+
+HOST:185.121.177.177,169.239.202.202
+
+PORT: 53,54,443,1053,1194,5353,8080,27015
+
+#Usage:
+
+    ProxyDNS v1.0.2, built on Jan 19 2019 at 15:40:09
+    
+    Usage: proxydns host port lport [-d]
+
+host: as HOST, is upsteam dns server ip address.
+
+port: as PORT, is upsteam dns server port.
+
+lport: local listen port.
+
+-d: run proxydns into daemon.
