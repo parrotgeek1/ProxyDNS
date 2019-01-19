@@ -12,15 +12,15 @@ Tool written in C which bypasses DNS-based internet censorship even when port 53
 
 ## OpenDNS ##
 
-HOST: 208.67.222.222,208.67.220.220
+HOST: 208.67.222.222, 208.67.220.220
 
-PORT: 443,5353
+PORT: 443, 5353
 
 ## Unlocator ##
 
 [how-to-bypass-dns-hijacking](https://support.unlocator.com/customer/portal/articles/1440517-how-to-bypass-dns-hijacking)
 
-HOST: 185.37.37.37,185.37.39.39
+HOST: 185.37.37.37, 185.37.39.39
 
 PORT: 54
 
@@ -28,15 +28,15 @@ PORT: 54
 
 [bypass-transparent-dns-proxy-with-a-dd-wrt-router](http://support.smartdnsproxy.com/customer/portal/articles/1666197-bypass-transparent-dns-proxy-with-a-dd-wrt-router)
 
-HOST: 23.21.43.50,54.229.171.243
+HOST: 23.21.43.50, 54.229.171.243
 
 PORT: 1512
 
 ## OpenNIC(anycast) ##
 
-HOST:185.121.177.177,169.239.202.202
+HOST:185.121.177.177, 169.239.202.202
 
-PORT: 53,54,443,1053,1194,5353,8080,27015
+PORT: 53, 54, 443, 1053, 1194, 5353, 8080, 27015
 
 # Usage: ##
 
