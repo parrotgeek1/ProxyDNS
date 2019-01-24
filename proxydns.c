@@ -152,7 +152,7 @@ int main(int argc, char **argv)
 #ifdef EMBEDDED
     "OS "
 #endif
-"v1.0.2, built on " __DATE__ " at " __TIME__);
+"v1.0.3, built on " __DATE__ " at " __TIME__);
 #ifdef EMBEDDED
     printf("\e[1;1H\e[2J"); // clear spurious vchiq errors
     nice(-20);
@@ -185,7 +185,7 @@ int main(int argc, char **argv)
     port = atoi(argv[2]);
     lport = atoi(argv[3]);
 #endif
-    printf("Using proxy DNS server from %s port %d at %d\n",host,port,lport);
+    printf("Proxying DNS server from %s port %d to local port %d\n",host,port,lport);
 #ifndef EMBEDDED
     if(argc == 5 && strcmp(argv[4],"-d") == 0) {
         puts("Becoming a daemon");
