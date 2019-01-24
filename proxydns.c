@@ -1,7 +1,7 @@
 #define CFG_HOST "208.67.222.222"
 #define CFG_PORT 443
 #define CFG_IP "ip=dhcp"
-#define CFG_LPORT 6666
+#define CFG_LPORT 53
 
 #include <stdio.h>
 #include <stdlib.h>
