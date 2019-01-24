@@ -55,24 +55,22 @@ HOST: 176.103.130.130, 176.103.130.131, 176.103.130.132, 176.103.130.134
 
 PORT: 5353
 
-## Google ##
+## Google (blocked by IP in China) ##
 
 HOST: 8.8.8.8, 8.8.4.4
 
 PORT: 5353
 
-*Someone said these worked but not me not here(China).* @rampageX
-
 # Usage: ##
 
-> ProxyDNS v1.0.2, built on Jan 19 2019 at 15:40:09
+> ProxyDNS v1.0.3, built on Jan 23 2019 at 23:05:11
 > 
 > Usage: proxydns host port lport [-d]
 
-    host: as HOST, is upsteam dns server ip address. default:208.67.222.222 (OpenDNS)
+    host: as HOST, is upstream DNS server ip address. default:208.67.222.222 (OpenDNS)
     
-    port: as PORT, is upsteam dns server port. default: 443
+    port: as PORT, is upstream DNS server port. default: 443
     
     lport: local listen port. default: 53
     
-    -d: run proxydns into daemon.
+    -d: run proxydns as a daemon.
