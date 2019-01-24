@@ -9,16 +9,16 @@ Tool written in C which bypasses DNS-based internet censorship even when port 53
 
 You *must* run rpi_image.sh with sudo!
 
-# Bug #
+# Bugs #
 
-* It never renews the DHCP lease (on embedded version)
+* It never renews the DHCP lease (on the embedded version)
 * It doesn't support IPv6
 
-# Servers: #
+# Servers #
 
 ## OpenDNS ##
 
-[ OpenDNS supports also UDP and TCP over ports 443 and 5353](https://support.opendns.com/hc/en-us/community/posts/115019265903/comments/115004948686)
+[OpenDNS also supports UDP and TCP over ports 443 and 5353](https://support.opendns.com/hc/en-us/community/posts/115019265903/comments/115004948686)
 
 HOST: 208.67.222.222, 208.67.220.220
 
@@ -26,7 +26,7 @@ PORT: 443, 5353
 
 ## Unlocator ##
 
-[how-to-bypass-dns-hijacking](https://support.unlocator.com/customer/portal/articles/1440517-how-to-bypass-dns-hijacking)
+[How to bypass DNS hijacking](https://support.unlocator.com/customer/portal/articles/1440517-how-to-bypass-dns-hijacking)
 
 HOST: 185.37.37.37, 185.37.39.39
 
@@ -34,13 +34,13 @@ PORT: 54
 
 ## Smart DNS Proxy ##
 
-[bypass-transparent-dns-proxy-with-a-dd-wrt-router](http://support.smartdnsproxy.com/customer/portal/articles/1666197-bypass-transparent-dns-proxy-with-a-dd-wrt-router)
+[Bypass transparent DNS proxy with a DD-WRT router](http://support.smartdnsproxy.com/customer/portal/articles/1666197-bypass-transparent-dns-proxy-with-a-dd-wrt-router)
 
 HOST: 23.21.43.50, 54.229.171.243
 
 PORT: 1512
 
-## OpenNIC(anycast) ##
+## OpenNIC (anycast) ##
 
 [OpenNIC Public Servers](https://servers.opennicproject.org/)
 
@@ -61,11 +61,9 @@ HOST: 8.8.8.8, 8.8.4.4
 
 PORT: 5353
 
-# Usage: ##
-
-> ProxyDNS v1.0.3, built on Jan 23 2019 at 23:05:11
-> 
-> Usage: proxydns host port lport [-d]
+# Usage ##
+ 
+    Usage: proxydns host port lport [-d]
 
     host: as HOST, is upstream DNS server ip address. default:208.67.222.222 (OpenDNS)
     
