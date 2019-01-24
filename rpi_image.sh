@@ -62,6 +62,7 @@ cd ..
 rm -f rpi-release.zip
 find sdcard -type f -name '.DS_Store' -delete
 zip -9 -q -r rpi-release.zip sdcard
-chmod -R 0755 sdcard rpi-release.zip
-chown -R $(logname):$(sudo -u $(logname) groups | cut -d ' ' -f 1) sdcard rpi-release.zip
+chmod 0755 rpi-release.zip
+chown $(logname):$(sudo -u $(logname) groups | cut -d ' ' -f 1) rpi-release.zip
+rm -rf sdcard
 echo Done
