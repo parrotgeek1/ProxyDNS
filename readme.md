@@ -18,6 +18,8 @@ You *must* run rpi_image.sh with sudo!
 
 ## OpenDNS ##
 
+[ OpenDNS supports also UDP and TCP over ports 443 and 5353](https://support.opendns.com/hc/en-us/community/posts/115019265903/comments/115004948686)
+
 HOST: 208.67.222.222, 208.67.220.220
 
 PORT: 443, 5353
@@ -40,9 +42,26 @@ PORT: 1512
 
 ## OpenNIC(anycast) ##
 
+[OpenNIC Public Servers](https://servers.opennicproject.org/)
+
 HOST:185.121.177.177, 169.239.202.202
 
 PORT: 53, 54, 443, 1053, 1194, 5353, 8080, 27015
+
+## AdGuard ##
+[AdGuard DNS](https://github.com/AdguardTeam/AdguardForiOS/issues/528#issuecomment-345700923)
+
+HOST: 176.103.130.130, 176.103.130.131, 176.103.130.132, 176.103.130.134
+
+PORT: 5353
+
+## Google ##
+
+HOST: 8.8.8.8, 8.8.4.4
+
+PORT: 5353
+
+*Someone said these worked but not me not here(China).* @rampageX
 
 # Usage: ##
 
@@ -50,10 +69,10 @@ PORT: 53, 54, 443, 1053, 1194, 5353, 8080, 27015
 > 
 > Usage: proxydns host port lport [-d]
 
-    host: as HOST, is upsteam dns server ip address.
+    host: as HOST, is upsteam dns server ip address. default:208.67.222.222 (OpenDNS)
     
-    port: as PORT, is upsteam dns server port.
+    port: as PORT, is upsteam dns server port. default: 443
     
-    lport: local listen port.
+    lport: local listen port. default: 53
     
     -d: run proxydns into daemon.
