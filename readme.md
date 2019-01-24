@@ -65,9 +65,9 @@ PORT: 5353
  
     Usage: proxydns host port lport [-d]
 
-    host: as HOST, is upstream DNS server ip address. default:208.67.222.222 (OpenDNS)
+    host: upstream DNS server IP address. default: 208.67.222.222 (OpenDNS)
     
-    port: as PORT, is upstream DNS server port. default: 443
+    port: upstream DNS server port. default: 443
     
     lport: local listen port. default: 53
     
