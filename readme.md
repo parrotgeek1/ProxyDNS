@@ -20,7 +20,8 @@ You *must* run rpi_image.sh with sudo!
 
 [OpenDNS also supports UDP and TCP over ports 443 and 5353](https://support.opendns.com/hc/en-us/community/posts/115019265903/comments/115004948686)
 
-HOST: 208.67.222.222, 208.67.220.220 | Anycast
+HOST: 208.67.222.222, 208.67.220.220, 208.67.222.123, 208.67.220.123
+ | Anycast
 
 PORT: 443, 5353
 
