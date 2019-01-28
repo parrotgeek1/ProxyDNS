@@ -106,12 +106,6 @@ HOST: 176.103.130.130, 176.103.130.131, 176.103.130.132, 176.103.130.134 | Russi
 
 PORT: 5353
 
-## Google (blocked by IP in China) ##
-
-HOST: 8.8.8.8, 8.8.4.4 | Anycast
-
-PORT: 5353
-
 ## USTC LUG ##
 
 HOST: 202.141.178.13, 202.141.162.123, 202.38.93.94 | China
@@ -122,10 +116,10 @@ HOST: 5353
  
     Usage: proxydns host port lport [-d]
 
-    host: upstream DNS server IP address. default: 208.67.222.222 (OpenDNS)
+    host: upstream DNS server IP address. default on Raspberry Pi: 208.67.222.222 (OpenDNS)
     
-    port: upstream DNS server port. default: 443
+    port: upstream DNS server port. default on Raspberry Pi: 443
     
     lport: local listen port. default: 53
     
-    -d: run proxydns as a daemon.
+    -d: run ProxyDNS as a daemon.
