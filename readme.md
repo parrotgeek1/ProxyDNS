@@ -120,6 +120,6 @@ HOST: 5353
     
     port: upstream DNS server port. default on Raspberry Pi: 443
     
-    lport: local listen port. default: 53
+    lport: local listen port. default on Raspberry Pi: 53
     
     -d: run ProxyDNS as a daemon.
