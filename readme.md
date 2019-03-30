@@ -1,6 +1,6 @@
 # ProxyDNS v1.0.3 #
 
-Tool written in C which bypasses DNS-based internet censorship even when port 53 is intercepted. Runs on all POSIX compliant OSes.Includes its own tiny single-purpose Linux distribution for secure and efficient use on the Raspberry Pi.
+Tool written in C which bypasses DNS-based internet censorship even when port 53 is intercepted. Runs on all POSIX compliant OSes. Includes its own tiny single-purpose Linux distribution for secure and efficient use on the Raspberry Pi.
 
 # [Download for Raspberry Pi](https://github.com/parrotgeek1/ProxyDNS/raw/master/rpi-release.zip)
 * Extract the contents of this zip to a FAT32 formatted SD card and insert it into your Raspberry Pi (B/B+/2/3/3B+). 
@@ -16,12 +16,11 @@ You *must* run rpi_image.sh with sudo!
 
 # Servers #
 
-## OpenDNS ##
+## OpenDNS (default for Raspberry Pi) ##
 
 [OpenDNS also supports UDP and TCP over ports 443 and 5353](https://support.opendns.com/hc/en-us/community/posts/115019265903/comments/115004948686)
 
-HOST: 208.67.222.222, 208.67.220.220, 208.67.222.123, 208.67.220.123
- | Anycast
+HOST: 208.67.222.222, 208.67.220.220, 208.67.222.123, 208.67.220.123 | Anycast
 
 PORT: 443, 5353
 
@@ -106,13 +105,7 @@ HOST: 176.103.130.130, 176.103.130.131, 176.103.130.132, 176.103.130.134 | Russi
 
 PORT: 5353
 
-## Google (blocked by IP in China) ##
-
-HOST: 8.8.8.8, 8.8.4.4 | Anycast
-
-PORT: 5353
-
-## USTC LUG ##
+## 中国科学技术大学Linux 用户协会 (USTC Linux User Group) ##
 
 HOST: 202.141.178.13, 202.141.162.123, 202.38.93.94 | China
 
@@ -122,10 +115,10 @@ HOST: 5353
  
     Usage: proxydns host port lport [-d]
 
-    host: upstream DNS server IP address. default: 208.67.222.222 (OpenDNS)
+    host: upstream DNS server IP address. default on Raspberry Pi: 208.67.222.222 (OpenDNS)
     
-    port: upstream DNS server port. default: 443
+    port: upstream DNS server port. default on Raspberry Pi: 443
     
-    lport: local listen port. default: 53
+    lport: local listen port. default on Raspberry Pi: 53
     
-    -d: run proxydns as a daemon.
+    -d: run ProxyDNS as a daemon.
