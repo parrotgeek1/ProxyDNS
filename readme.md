@@ -24,6 +24,13 @@ HOST: 208.67.222.222, 208.67.220.220, 208.67.222.123, 208.67.220.123 | Anycast
 
 PORT: 443, 5353
 
+## Quad9 ##
+[My ISP captures port 53, is there another port I can use for Quad9?](https://www.quad9.net/faq/#My_ISP_captures_port_53_is_there_another_port_I_can_use_for_Quad9)
+
+HOST: 9.9.9.9
+
+PORT: 9953
+
 ## Unlocator ##
 
 [How to bypass DNS hijacking](https://support.unlocator.com/customer/portal/articles/1440517-how-to-bypass-dns-hijacking)
