@@ -48,7 +48,7 @@ unzip -q -o fw.zip
 mv rpi-firmware-master/* sdcard/
 rm -rf fw.zip rpi-firmware-master
 cd sdcard
-rm -rf modules overlays vc *.symvers start{,_db,_x}.elf git_hash *.md fixup{,_db,_x}.dat uname_string* bcm2708-rpi-0-w.dtb bcm*-rpi-cm*.dtb
+rm -rf modules overlays vc *.symvers start{4,_,}{,db,x}.elf git_hash *.md fixup{4,_,}{,db,x}.dat uname_string* bcm2708-rpi-zero*.dtb bcm*-rpi-cm*.dtb
 cat << EOF > config.txt
 gpu_mem=16
 boot_delay=0
