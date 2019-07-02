@@ -3,7 +3,7 @@
 Tool written in C which bypasses DNS-based internet censorship even when port 53 is intercepted. Runs on all POSIX compliant OSes. Includes its own tiny single-purpose Linux distribution for secure and efficient use on the Raspberry Pi.
 
 # [Download for Raspberry Pi](https://github.com/parrotgeek1/ProxyDNS/raw/master/rpi-release.zip)
-* Extract the contents of this zip to a FAT32 formatted SD card and insert it into your Raspberry Pi (B/B+/2/3/3B+). 
+* Extract the contents of this zip to a FAT32 formatted SD card and insert it into your Raspberry Pi (B/B+/2/3/3B+/4). 
 * Only supports Ethernet, not WiFi!
 # [Source Code](https://github.com/parrotgeek1/ProxyDNS)
 
