@@ -152,7 +152,7 @@ int main(int argc, char **argv)
 #ifdef EMBEDDED
     "OS "
 #endif
-"v1.0.3, built on " __DATE__ " at " __TIME__);
+"v1.0.4");
 #ifdef EMBEDDED
     printf("\e[1;1H\e[2J"); // clear spurious vchiq errors
     nice(-20);
