@@ -37,7 +37,7 @@ cd initrd
 mv ../proxydns init
 chown -R 0:0 .
 chmod -R 0755 .
-find . | cpio -H newc -o > ../sdcard/initrd >/dev/null 2>&1
+find . | cpio -H newc -o > ../sdcard/initrd 
 gzip ../sdcard/initrd
 cd ..
 rm -rf initrd
