@@ -1,4 +1,4 @@
-# ProxyDNS v1.0.3 #
+# ProxyDNS v1.0.4 #
 
 Tool written in C which bypasses DNS-based internet censorship even when port 53 is intercepted. Runs on all POSIX compliant OSes. Includes its own tiny single-purpose Linux distribution for secure and efficient use on the Raspberry Pi.
 
@@ -11,112 +11,113 @@ You *must* run rpi_image.sh with sudo!
 
 # Bugs #
 
-* It never renews the DHCP lease (on the embedded version)
-* It doesn't support IPv6
+* DHCP lease is never renewed on the Raspberry Pi version
+* No support for IPv6
 
 # Servers #
 
 ## OpenDNS (default for Raspberry Pi) ##
 
-[OpenDNS also supports UDP and TCP over ports 443 and 5353](https://support.opendns.com/hc/en-us/community/posts/115019265903/comments/115004948686)
+Source: [OpenDNS also supports UDP and TCP over ports 443 and 5353](https://support.opendns.com/hc/en-us/community/posts/115019265903/comments/115004948686)
 
-HOST: 208.67.222.222, 208.67.220.220, 208.67.222.123, 208.67.220.123 | Anycast
+Host: 208.67.222.222, 208.67.220.220, 208.67.222.123, 208.67.220.123 | Anycast
 
-PORT: 443, 5353
+Port: 443, 5353
 
 ## Quad9 ##
-[My ISP captures port 53, is there another port I can use for Quad9?](https://www.quad9.net/faq/#My_ISP_captures_port_53_is_there_another_port_I_can_use_for_Quad9)
 
-HOST: 9.9.9.9
+Source: [My ISP captures port 53, is there another port I can use for Quad9?](https://www.quad9.net/faq/#My_ISP_captures_port_53_is_there_another_port_I_can_use_for_Quad9)
 
-PORT: 9953
+Host: 9.9.9.9
+
+Port: 9953
 
 ## Unlocator ##
 
-[How to bypass DNS hijacking](https://support.unlocator.com/customer/portal/articles/1440517-how-to-bypass-dns-hijacking)
+Source: [How to bypass DNS hijacking](https://support.unlocator.com/customer/portal/articles/1440517-how-to-bypass-dns-hijacking)
 
-HOST: 185.37.37.37, 185.37.39.39 | USA
+Host: 185.37.37.37, 185.37.39.39 | USA
 
-PORT: 54
+Port: 54
 
 ## Smart DNS Proxy ##
 
-[Bypass transparent DNS proxy with a DD-WRT router](http://support.smartdnsproxy.com/customer/portal/articles/1666197-bypass-transparent-dns-proxy-with-a-dd-wrt-router)
+Source: [Bypass transparent DNS proxy with a DD-WRT router](http://support.smartdnsproxy.com/customer/portal/articles/1666197-bypass-transparent-dns-proxy-with-a-dd-wrt-router)
 
-HOST: 23.21.43.50, 54.229.171.243 | USA
+Host: 23.21.43.50, 54.229.171.243 | USA
 
-PORT: 1512
+Port: 1512
 
 ## OpenNIC ##
 
-[OpenNIC Public Servers](https://servers.opennicproject.org/)
+Source: [OpenNIC Public Servers](https://servers.opennicproject.org/)
 
 1. Anycast
 
-HOST:185.121.177.177, 169.239.202.202
+Host: 185.121.177.177, 169.239.202.202
 
 PORT: 53, 54, 443, 1053, 1194, 5353, 8080, 27015
 
 2. Australia
 
-HOST: 103.236.162.119
+Host: 103.236.162.119
 
-PORT: 443, 5353
+Port: 443, 5353
 
 3. Canada
 
-HOST: 142.4.204.111, 142.4.205.47
+Host: 142.4.204.111, 142.4.205.47
 
 PORT: 443
 
 4. Germany
 
-HOST: 82.141.39.32, 50.3.82.162
+Host: 82.141.39.32, 50.3.82.162
 
-PORT: 5353
+Port: 5353
 
 5. France
 
-HOST: 163.172.168.171, 91.121.84.121, 195.154.226.236
+Host: 163.172.168.171, 91.121.84.121, 195.154.226.236
 
-PORT: 5353
+Port: 5353
 
 6. Russia
 
-HOST: 5.189.170.196
+Host: 5.189.170.196
 
-PORT: 1512, 3074
+Port: 1512, 3074
 
 7. UK
 
-HOST: 159.89.249.249
+Host: 159.89.249.249
 
-PORT:80, 443, 5353
+Port: 80, 443, 5353
 
 8. UK
 
-HOST: 185.164.136.225
+Host: 185.164.136.225
 
-PORT: 5353
+Port: 5353
 
 9. Romania
 
-HOST: 188.213.49.35
+Host: 188.213.49.35
 
-PORT: 5353
+Port: 5353
 
 ## AdGuard ##
-[AdGuard DNS](https://github.com/AdguardTeam/AdguardForiOS/issues/528#issuecomment-345700923)
+Source: [AdGuard DNS GitHub issue](https://github.com/AdguardTeam/AdguardForiOS/issues/528#issuecomment-345700923)
 
-HOST: 176.103.130.130, 176.103.130.131, 176.103.130.132, 176.103.130.134 | Russia
+Host: 176.103.130.130, 176.103.130.131, 176.103.130.132, 176.103.130.134 | Russia
 
-PORT: 5353
+Port: 5353
 
-## 中国科学技术大学Linux 用户协会 (USTC Linux User Group) ##
+## USTC Linux User Group ##
 
-HOST: 202.141.178.13, 202.141.162.123, 202.38.93.94 | China
+Host: 202.141.178.13, 202.141.162.123, 202.38.93.94 | China
 
-PORT: 5353
+Port: 5353
 
 # Usage ##
  
@@ -126,6 +127,6 @@ PORT: 5353
     
     port: upstream DNS server port. default on Raspberry Pi: 443
     
-    lport: local listen port. default on Raspberry Pi: 53
+    lport: local listening port. default on Raspberry Pi: 53
     
     -d: run ProxyDNS as a daemon.
