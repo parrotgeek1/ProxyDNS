@@ -12,8 +12,8 @@
 #include <unistd.h>
 #include <signal.h>
 
-#define BACKLOG  10      /* Passed to listen() */
-#define BUF_SIZE 4096    /* Buffer for  transfers */
+#define BACKLOG  10      // Passed to listen()
+#define BUF_SIZE 65535    // Maximum size of DNS packet
 
 #ifdef EMBEDDED
 #include <sys/utsname.h>
@@ -21,7 +21,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-void unameinfo(void) {
+static void unameinfo(void) {
     struct utsname buffer;
     if (uname(&buffer) != 0) {
         perror("uname");
@@ -31,8 +31,7 @@ void unameinfo(void) {
 }
 #endif
 
-unsigned int transfer(int from, int to)
-{
+static unsigned int transfer(int from, int to) {
     char buf[BUF_SIZE];
     unsigned int disconnected = 0;
     size_t bytes_read, bytes_written;
@@ -49,15 +48,12 @@ unsigned int transfer(int from, int to)
     return disconnected;
 }
 
-void handle(int client, char *host, int port)
-{
+static void handle(int client, char *host, int port) {
     int server = -1;
     unsigned int disconnected = 0;
     fd_set set;
     unsigned int max_sock;
 
-
-    /* Create the socket */
     server = socket(PF_INET,SOCK_STREAM,IPPROTO_IP);
     if (server == -1) {
         perror("TCP error: socket");
@@ -69,7 +65,6 @@ void handle(int client, char *host, int port)
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(port);
 
-    /* Connect to the host */
     if (connect(server, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) == -1) {
         perror("TCP error: connect");
         close(client);
@@ -83,7 +78,6 @@ void handle(int client, char *host, int port)
         max_sock = server;
     }
 
-    /* Main transfer loop */
     while (!disconnected) {
         FD_ZERO(&set);
         FD_SET(client, &set);
@@ -103,27 +97,27 @@ void handle(int client, char *host, int port)
     close(client);
 }
 
-void udpthread(char *ip, int port, int lport)
-{
-    lport = CFG_LPORT;
+static void udpthread(char *ip, int port, int lport) {
     int os=socket(PF_INET,SOCK_DGRAM,IPPROTO_IP);
 
     struct sockaddr_in a;
     a.sin_family=AF_INET;
-    a.sin_addr.s_addr=inet_addr("0.0.0.0"); a.sin_port=htons(lport);
+    a.sin_addr.s_addr=inet_addr("0.0.0.0");
+    a.sin_port=htons(lport);
     if(bind(os,(struct sockaddr *)&a,sizeof(a)) == -1) {
         perror("UDP error: bind");
         exit(1);
     }
 
-    a.sin_addr.s_addr=inet_addr(ip); a.sin_port=htons(port);
-
+    a.sin_addr.s_addr=inet_addr(ip);
+    a.sin_port=htons(port);
     struct sockaddr_in sa;
-    struct sockaddr_in da; da.sin_addr.s_addr=0;
+    socklen_t sn=sizeof(sa);
+    struct sockaddr_in da;
+    da.sin_addr.s_addr=0;
     puts("Started UDP thread");
     while(1) {
         char buf[256];
-        socklen_t sn=sizeof(sa);
         int n=recvfrom(os,buf,sizeof(buf),0,(struct sockaddr *)&sa,&sn);
         if(n<=0) continue;
 
@@ -136,22 +130,22 @@ void udpthread(char *ip, int port, int lport)
     }
 }
 
-
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
     int sock;
-    int reuseaddr = 1; /* True */
-    char * host;
+    int reuseaddr = 1;
+    char *host;
     int port;
     int lport;
+#ifdef EMBEDDED
     host = CFG_HOST;
     port = CFG_PORT;
     lport = CFG_LPORT;
+#endif
     puts("ProxyDNS "
 #ifdef EMBEDDED
     "OS "
 #endif
-"v1.0.4");
+    "v1.0.5");
 #ifdef EMBEDDED
     printf("\e[1;1H\e[2J"); // clear spurious vchiq errors
     nice(-20);
@@ -175,7 +169,7 @@ int main(int argc, char **argv)
         _exit(EXIT_FAILURE);   // exec never returns
     }
 #else
-    /* Get the server host and port from the command line */
+    // Get the server host and port from the command line
     if (argc < 4 || argc > 5 || atoi(argv[2]) <= 0) {
         fprintf(stderr, "Usage: %s host port lport [-d]\n",argv[0]);
         return 1;
@@ -191,13 +185,11 @@ int main(int argc, char **argv)
         daemon(0,0);
     }
 #endif
-    /* Create the socket */
     sock = socket(PF_INET,SOCK_STREAM,IPPROTO_IP);
     if (sock == -1) {
         perror("TCP error: socket");
         return 1;
     }
-    /* Enable the socket to reuse the address */
     if (setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &reuseaddr, sizeof(int)) == -1) {
         perror("TCP error: setsockopt");
 
@@ -205,25 +197,22 @@ int main(int argc, char **argv)
     }
     struct sockaddr_in atcp;
     atcp.sin_family=AF_INET;
-    atcp.sin_addr.s_addr=inet_addr("0.0.0.0"); atcp.sin_port=htons(lport);
-    /* Bind to the address */
+    atcp.sin_addr.s_addr=inet_addr("0.0.0.0");
+    atcp.sin_port=htons(lport);
     if (bind(sock, (struct sockaddr *)&atcp,sizeof(atcp)) == -1) {
         perror("TCP error: bind");
         return 1;
     }
-    /* Listen */
     if (listen(sock, BACKLOG) == -1) {
         perror("TCP error: listen");
         return 1;
     }
-    /* Ignore broken pipe signal */
     signal(SIGPIPE, SIG_IGN);
     pid_t pid = fork();
     if (pid == 0) {
         // child process
         udpthread(host,port,lport);
     } else if (pid > 0) {
-        /* Main loop */
         puts("Started TCP thread");
         while (1) {
             socklen_t size = sizeof(struct sockaddr_in);
