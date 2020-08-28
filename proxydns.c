@@ -115,10 +115,12 @@ static void udpthread(char *ip, int port, int lport) {
     socklen_t sn=sizeof(sa);
     struct sockaddr_in da;
     da.sin_addr.s_addr=0;
+    int n;
+    char buf[65507];
+    // the actual limit for the data length, which is imposed by the underlying IPv4 protocol, is 65,507 bytes (65,535 − 8 byte UDP header − 20 byte IP header)
     puts("Started UDP thread");
     while(1) {
-        char buf[256];
-        int n=recvfrom(os,buf,sizeof(buf),0,(struct sockaddr *)&sa,&sn);
+        n=recvfrom(os,buf,sizeof(buf),0,(struct sockaddr *)&sa,&sn);
         if(n<=0) continue;
 
         if(sa.sin_addr.s_addr==a.sin_addr.s_addr && sa.sin_port==a.sin_port) {
