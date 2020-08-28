@@ -37,8 +37,8 @@ cd initrd
 mv ../proxydns init
 chown -R 0:0 .
 chmod -R 0755 .
-find . | cpio -H newc -o > ../sdcard/initrd 
-gzip ../sdcard/initrd
+find . | cpio -H newc -o > ../sdcard/initrd 2>/dev/null
+gzip -9 ../sdcard/initrd
 cd ..
 rm -rf initrd
 
@@ -62,7 +62,7 @@ cd ..
 rm -f rpi-release.zip
 find sdcard -type f -name '.DS_Store' -delete
 zip -9 -q -r rpi-release.zip sdcard
-chmod 0755 rpi-release.zip
+chmod 0644 rpi-release.zip
 chown $(logname):$(sudo -u $(logname) groups | cut -d ' ' -f 1) rpi-release.zip
 rm -rf sdcard
 echo Done
