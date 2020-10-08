@@ -1,4 +1,4 @@
-# ProxyDNS v1.0.4 #
+# ProxyDNS v1.0.5
 
 Tool written in C which bypasses DNS-based internet censorship even when port 53 is intercepted. Runs on all POSIX compliant OSes. Includes its own tiny single-purpose Linux distribution for secure and efficient use on the Raspberry Pi.
 
@@ -9,14 +9,14 @@ Tool written in C which bypasses DNS-based internet censorship even when port 53
 
 You *must* run rpi_image.sh with sudo!
 
-# Bugs #
+# Bugs
 
 * DHCP lease is never renewed on the Raspberry Pi version
 * No support for IPv6
 
-# Servers #
+# Servers
 
-## OpenDNS (default for Raspberry Pi) ##
+## OpenDNS (default for Raspberry Pi)
 
 Source: [OpenDNS also supports UDP and TCP over ports 443 and 5353](https://support.opendns.com/hc/en-us/community/posts/115019265903/comments/115004948686)
 
@@ -24,7 +24,7 @@ Host: 208.67.222.222, 208.67.220.220, 208.67.222.123, 208.67.220.123 | Anycast
 
 Port: 443, 5353
 
-## Quad9 ##
+## Quad9
 
 Source: [My ISP captures port 53, is there another port I can use for Quad9?](https://www.quad9.net/faq/#My_ISP_captures_port_53_is_there_another_port_I_can_use_for_Quad9)
 
@@ -32,7 +32,7 @@ Host: 9.9.9.9
 
 Port: 9953
 
-## Unlocator ##
+## Unlocator
 
 Source: [How to bypass DNS hijacking](https://support.unlocator.com/customer/portal/articles/1440517-how-to-bypass-dns-hijacking)
 
@@ -40,7 +40,7 @@ Host: 185.37.37.37, 185.37.39.39 | USA
 
 Port: 54
 
-## Smart DNS Proxy ##
+## Smart DNS Proxy
 
 Source: [Bypass transparent DNS proxy with a DD-WRT router](http://support.smartdnsproxy.com/customer/portal/articles/1666197-bypass-transparent-dns-proxy-with-a-dd-wrt-router)
 
@@ -48,7 +48,7 @@ Host: 23.21.43.50, 54.229.171.243 | USA
 
 Port: 1512
 
-## OpenNIC ##
+## OpenNIC
 
 Source: [OpenNIC Public Servers](https://servers.opennicproject.org/)
 
@@ -106,20 +106,20 @@ Host: 188.213.49.35
 
 Port: 5353
 
-## AdGuard ##
+## AdGuard
 Source: [AdGuard DNS GitHub issue](https://github.com/AdguardTeam/AdguardForiOS/issues/528#issuecomment-345700923)
 
 Host: 176.103.130.130, 176.103.130.131, 176.103.130.132, 176.103.130.134 | Russia
 
 Port: 5353
 
-## USTC Linux User Group ##
+## USTC Linux User Group
 
 Host: 202.141.178.13, 202.141.162.123, 202.38.93.94 | China
 
 Port: 5353
 
-# Usage ##
+# Usage
  
     Usage: proxydns host port lport [-d]
 
