@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/sh -e
 
 #change this to match your own computer
 CCPREFIX="$HOME/arm-none-linux-gnueabi/bin/arm-none-linux-gnueabi-"

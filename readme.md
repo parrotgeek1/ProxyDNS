@@ -1,4 +1,4 @@
-# ProxyDNS v1.0.5
+# ProxyDNS v1.0.6
 
 Tool written in C which bypasses DNS-based internet censorship even when port 53 is intercepted. Runs on all POSIX compliant OSes. Includes its own tiny single-purpose Linux distribution for secure and efficient use on the Raspberry Pi.
 
